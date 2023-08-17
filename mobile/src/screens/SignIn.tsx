@@ -100,7 +100,6 @@ export function SignIn() {
                   <Text
                     fontSize="3xl"
                     fontFamily="heading"
-                    lineHeight="0"
                     textAlign="center"
                   >
                     marketspace
@@ -109,7 +108,7 @@ export function SignIn() {
                     fontSize="sm"
                     fontFamily="light"
                     color="gray.500"
-                    lineHeight="0"
+                    mt="-1"
                     textAlign="center"
                   >
                     Seu espaço de compra e venda

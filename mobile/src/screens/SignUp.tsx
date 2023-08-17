@@ -138,8 +138,6 @@ export function SignUp() {
                 fontSize="sm"
                 fontFamily="body"
                 color="gray.600"
-                mt="1"
-                lineHeight="0"
                 textAlign="center"
               >
                 Crie sua conta e use o espaço para comprar itens variados e vender seus
