@@ -9,6 +9,7 @@ import { storageUserSave, storageUserGet, storageUserRemove } from "@storage/sto
 
 import { api } from "@services/api";
 import { UserDTO } from "@dtos/UserDTO";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type AuthContextDataProps = {
   user: UserDTO;
