@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from "react";
 import { Platform, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -26,7 +26,7 @@ const signInSchema: z.ZodType<FormDataProps> = z.object({
   email: z
     .string({ required_error: "Informe o e-mail" })
     .email({ message: "E-mail inválido" }),
-    password: z
+  password: z
     .string({ required_error: "Informe sua senha" })
     .min(6, { message: "Digite uma senha de pelo menos 6 digitos" }),
 });
@@ -36,7 +36,7 @@ export function SignIn() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
   const toast = useToast();
 
-  const {signIn} = useAuth();
+  const { signIn } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -97,11 +97,7 @@ export function SignIn() {
               <VStack width="100%" alignItems="center" space="2">
                 <LogoSvg />
                 <VStack>
-                  <Text
-                    fontSize="3xl"
-                    fontFamily="heading"
-                    textAlign="center"
-                  >
+                  <Text fontSize="3xl" fontFamily="heading" textAlign="center">
                     marketspace
                   </Text>
                   <Text
@@ -121,39 +117,43 @@ export function SignIn() {
                   Acesse sua conta
                 </Text>
                 <Controller
-              control={control}
-              name="email"
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="E-mail"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={errors.email?.message}
-                  mt="4"
+                  control={control}
+                  name="email"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      placeholder="E-mail"
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      onChangeText={onChange}
+                      value={value}
+                      errorMessage={errors.email?.message}
+                      mt="4"
+                    />
+                  )}
                 />
-              )}
-            />
 
-            <Controller
-              control={control}
-              name="password"
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="Senha"
-                  secureTextEntry
-                  onChangeText={onChange}
-                  value={value}
-                  onSubmitEditing={handleSubmit(handleSignIn)}
-                  returnKeyType="join"
-                  errorMessage={errors.password?.message}
-                  textContentType="oneTimeCode"
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      placeholder="Senha"
+                      secureTextEntry
+                      onChangeText={onChange}
+                      value={value}
+                      onSubmitEditing={handleSubmit(handleSignIn)}
+                      returnKeyType="join"
+                      errorMessage={errors.password?.message}
+                      textContentType="oneTimeCode"
+                    />
+                  )}
                 />
-              )}
-            />
 
-                <Button title="Entrar" onPress={handleSubmit(handleSignIn)} isLoading={isLoading} />
+                <Button
+                  title="Entrar"
+                  onPress={handleSubmit(handleSignIn)}
+                  isLoading={isLoading}
+                />
               </VStack>
             </VStack>
 

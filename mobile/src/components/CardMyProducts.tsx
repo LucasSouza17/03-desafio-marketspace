@@ -2,7 +2,11 @@ import { HStack, Text, VStack, useTheme } from "native-base";
 import { ArrowRight, Tag } from "phosphor-react-native";
 import { TouchableOpacity } from "react-native";
 
-export function CardMyProducts() {
+type Props = {
+  productsActive: number;
+}
+
+export function CardMyProducts({productsActive}: Props) {
   const { colors } = useTheme();
 
   return (
@@ -22,7 +26,7 @@ export function CardMyProducts() {
           <Tag size={22} color={colors.blue[700]} />
           <VStack>
             <Text fontSize="lg" fontFamily="heading">
-              4
+              {productsActive}
             </Text>
             <Text mt="-1" fontSize="xs">
               anúncios ativos

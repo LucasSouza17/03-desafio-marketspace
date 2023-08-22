@@ -1,7 +1,17 @@
-import { Center, HStack, Image, Text, VStack, View } from "native-base";
 import { Dimensions } from "react-native";
+import { Center, Image, Text, VStack, View } from "native-base";
 
-export function CardProduct() {
+import { ProductDTO } from "@dtos/ProductDTO";
+import { api } from "@services/api";
+
+import EmptyImage from '../assets/emptyImage.jpg'
+import { FormatCurrency } from "@utils/FormatCurrency";
+
+type Props = {
+  product: ProductDTO;
+}
+
+export function CardProduct({product}: Props) {
   const WIDTH_IMAGE = Dimensions.get("window").width / 2 - 34;
   const isInative = false;
 
@@ -18,7 +28,7 @@ export function CardProduct() {
           />
         )}
         <Image
-          src="https://img.olhardigital.com.br/wp-content/uploads/2023/08/Destaque-iPhone-14-Pro-botao-iPhone-15-Pro.jpg"
+          source={product.product_images.length > 0 ? {uri: `${api.defaults.baseURL}/images/${product.product_images[0].path}`} : EmptyImage}
           alt="product image"
           w={WIDTH_IMAGE}
           h={24}
@@ -26,7 +36,7 @@ export function CardProduct() {
           rounded="sm"
         />
         <Image
-          src="https://avatars.githubusercontent.com/u/2254731?v=4"
+          source={{uri: `${api.defaults.baseURL}/images/${product.user.avatar}`}}
           alt="user"
           w={6}
           h={6}
@@ -41,16 +51,16 @@ export function CardProduct() {
           position="absolute"
           right="1"
           top="1"
-          bg="blue.700"
+          bg={product.is_new ? "blue.700" : "gray.600" }
           rounded="full"
           px="2"
           py="0.5"
         >
           <Text color="white" fontFamily="heading" fontSize={10}>
-            NOVO
+            {product.is_new ? "NOVO" : "USADO"}
           </Text>
         </Center>
-        {isInative && (
+        {!product?.is_active && (
           <Text
             position="absolute"
             bottom="2"
@@ -65,14 +75,14 @@ export function CardProduct() {
         )}
       </VStack>
       <VStack mt="1">
-        <Text color={isInative ? "gray.400" : "gray.700"}>Iphone 15 pro max</Text>
+        <Text color={!product?.is_active ? "gray.400" : "gray.700"}>{product.name}</Text>
         <Text
           fontSize="md"
-          fontFamily={isInative ? "body" : "heading"}
+          fontFamily={!product?.is_active ? "body" : "heading"}
           mt="-1"
-          color={isInative ? "gray.400" : "gray.700"}
+          color={!product?.is_active ? "gray.400" : "gray.700"}
         >
-          <Text fontSize="sm">R$</Text> 7.899,90
+          <Text fontSize="sm">R$</Text> {FormatCurrency(product.price)}
         </Text>
       </VStack>
     </VStack>

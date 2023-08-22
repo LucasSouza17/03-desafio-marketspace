@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Box, HStack, Input, useTheme } from "native-base";
+import { Box, HStack, IInputProps, Input, useTheme } from "native-base";
 import { MagnifyingGlass, Sliders } from "phosphor-react-native";
 import { TouchableOpacity } from "react-native";
 
-type Props = {
+type Props = IInputProps & {
   onChangeText: (value: string) => void;
   onClickSearch: () => void;
   onClickFilters: () => void;
 };
 
-export function SearchInput({ onChangeText, onClickFilters, onClickSearch }: Props) {
+export function SearchInput({ onChangeText, onClickFilters, onClickSearch, ...rest }: Props) {
   const [isFocus, setIsFocus] = useState(false);
   const { colors } = useTheme();
 
@@ -39,6 +39,7 @@ export function SearchInput({ onChangeText, onClickFilters, onClickSearch }: Pro
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChangeText={onChangeText}
+        {...rest}
       />
       <HStack alignItems="center" space="3">
         <TouchableOpacity activeOpacity={0.7} onPress={onClickSearch}>
