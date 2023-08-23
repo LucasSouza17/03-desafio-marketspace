@@ -7,6 +7,7 @@ import { useAuth } from "@hooks/useAuth";
 import { api } from "@services/api";
 
 import { Button } from "./Button";
+import { UserAvatar } from "./UserAvatar";
 
 export function HeaderProfile() {
   const { top } = useSafeAreaInsets();
@@ -16,15 +17,7 @@ export function HeaderProfile() {
     <HStack flexDir="row" pt={top + 20} justifyContent="space-between" space="8">
       <TouchableOpacity activeOpacity={0.7}>
         <HStack space="2">
-          <Image
-            source={{uri: `${api.defaults.baseURL}/images/${user.avatar}`}}
-            alt="profile"
-            w={12}
-            h={12}
-            rounded="full"
-            borderWidth={2}
-            borderColor="blue.300"
-          />
+          <UserAvatar avatar={user.avatar} sizeImage={12} />
           <VStack justifyContent="center">
             <Text fontFamily="body" fontSize="md" color="gray.700">
               Boas vindas,

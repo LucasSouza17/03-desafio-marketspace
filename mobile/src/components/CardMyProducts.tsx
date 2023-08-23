@@ -1,13 +1,20 @@
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
 import { HStack, Text, VStack, useTheme } from "native-base";
 import { ArrowRight, Tag } from "phosphor-react-native";
-import { TouchableOpacity } from "react-native";
+import { HomeNavigatorRoutesProps } from "@routes/app.routes";
 
 type Props = {
   productsActive: number;
-}
+};
 
-export function CardMyProducts({productsActive}: Props) {
+export function CardMyProducts({ productsActive }: Props) {
+  const navigation = useNavigation<HomeNavigatorRoutesProps>();
   const { colors } = useTheme();
+
+  function handleGoToMyProducts() {
+    navigation.navigate("my_products");
+  }
 
   return (
     <VStack space="3">
@@ -33,7 +40,7 @@ export function CardMyProducts({productsActive}: Props) {
             </Text>
           </VStack>
         </HStack>
-        <TouchableOpacity activeOpacity={0.75}>
+        <TouchableOpacity activeOpacity={0.75} onPress={handleGoToMyProducts}>
           <HStack space="2" alignItems="center">
             <Text fontSize="xs" fontFamily="heading" color="blue.700">
               Meus anúncios

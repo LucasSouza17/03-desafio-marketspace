@@ -4,9 +4,11 @@ import {
   BottomTabNavigationProp,
 } from "@react-navigation/bottom-tabs";
 import { useTheme } from "native-base";
+import { House, Tag, SignOut as SignOutPhosphor } from "phosphor-react-native";
 
 import { Home } from "@screens/Home";
-import { House, SignOut, Tag } from "phosphor-react-native";
+import { MyProducts } from "@screens/MyProducts";
+import { SignOut } from "@screens/SignOut";
 
 type AppRoutes = {
   home: undefined;
@@ -49,16 +51,16 @@ export function AppRoutes() {
       />
       <Screen
         name="my_products"
-        component={Home}
+        component={MyProducts}
         options={{
           tabBarIcon: ({ color, focused }) => <Tag color={color} size={iconSize} weight={focused ? "bold" : "regular"} />,
         }}
       />
       <Screen
         name="signOut"
-        component={Home}
+        component={SignOut}
         options={{
-          tabBarIcon: ({ focused }) => <SignOut color="#E07878" size={iconSize} weight={focused ? "bold" : "regular"} />,
+          tabBarIcon: ({ focused }) => <SignOutPhosphor color="#E07878" size={iconSize} weight={focused ? "bold" : "regular"} />,
         }}
       />
     </Navigator>
