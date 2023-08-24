@@ -127,7 +127,7 @@ export function MyProducts() {
         }
         renderItem={({ item, index }) => (
           <Box key={item.id} mr={index % 2 === 0 ? "5" : "0"} mb="8">
-            <CardProduct product={item} />
+            <CardProduct product={item} onPressCard={() => null} />
           </Box>
         )}
       />

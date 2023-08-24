@@ -2,14 +2,14 @@ import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import { HStack, Text, VStack, useTheme } from "native-base";
 import { ArrowRight, Tag } from "phosphor-react-native";
-import { HomeNavigatorRoutesProps } from "@routes/app.routes";
+import { TabNavigatorRoutesProps } from "@routes/tab.routes";
 
 type Props = {
   productsActive: number;
 };
 
 export function CardMyProducts({ productsActive }: Props) {
-  const navigation = useNavigation<HomeNavigatorRoutesProps>();
+  const navigation = useNavigation<TabNavigatorRoutesProps>();
   const { colors } = useTheme();
 
   function handleGoToMyProducts() {

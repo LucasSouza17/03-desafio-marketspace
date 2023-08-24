@@ -1,68 +1,31 @@
-import { Platform } from "react-native";
 import {
-  createBottomTabNavigator,
-  BottomTabNavigationProp,
-} from "@react-navigation/bottom-tabs";
-import { useTheme } from "native-base";
-import { House, Tag, SignOut as SignOutPhosphor } from "phosphor-react-native";
+  NativeStackNavigationProp,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
 
-import { Home } from "@screens/Home";
-import { MyProducts } from "@screens/MyProducts";
-import { SignOut } from "@screens/SignOut";
+import { TabRoutes } from "./tab.routes";
+import { ProductDetails } from "@screens/ProductDetails";
 
 type AppRoutes = {
-  home: undefined;
-  my_products: undefined;
-  signOut: undefined;
+  home_navigate: undefined;
+  product_details: {
+    productId: string
+  };
+  my_product_details: undefined;
+  new_product: undefined;
+  new_product_preview: undefined;
+  edit_product: undefined;
 };
 
-export type HomeNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
+export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutes>;
 
-const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
+const { Navigator, Screen } = createNativeStackNavigator<AppRoutes>();
 
 export function AppRoutes() {
-  const { sizes, colors } = useTheme();
-
-  const iconSize = sizes[6];
-
   return (
-    <Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarShowLabel: false,
-        tabBarActiveTintColor: colors.gray[600],
-        tabBarInactiveTintColor: colors.gray[400],
-        tabBarStyle: {
-          backgroundColor: colors.gray[100],
-          borderTopWidth: 0,
-          height: Platform.OS === "android" ? "auto" : 96,
-          paddingBottom: Platform.OS === "android" ? sizes[8] : sizes[12],
-          paddingTop: sizes[8],
-          paddingHorizontal: 20,
-        },
-      }}
-    >
-      <Screen
-        name="home"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, focused }) => <House color={color} size={iconSize} weight={focused ? "bold" : "regular"} />,
-        }}
-      />
-      <Screen
-        name="my_products"
-        component={MyProducts}
-        options={{
-          tabBarIcon: ({ color, focused }) => <Tag color={color} size={iconSize} weight={focused ? "bold" : "regular"} />,
-        }}
-      />
-      <Screen
-        name="signOut"
-        component={SignOut}
-        options={{
-          tabBarIcon: ({ focused }) => <SignOutPhosphor color="#E07878" size={iconSize} weight={focused ? "bold" : "regular"} />,
-        }}
-      />
+    <Navigator initialRouteName="home_navigate" screenOptions={{ headerShown: false }}>
+      <Screen name="home_navigate" component={TabRoutes} />
+      <Screen name="product_details" component={ProductDetails} />
     </Navigator>
   );
 }

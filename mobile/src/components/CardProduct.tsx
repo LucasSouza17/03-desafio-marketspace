@@ -1,4 +1,4 @@
-import { Dimensions } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
 import { Center, Image, Text, VStack, View } from "native-base";
 
 import { ProductDTO } from "@dtos/ProductDTO";
@@ -10,14 +10,14 @@ import { UserAvatar } from "./UserAvatar";
 
 type Props = {
   product: ProductDTO;
+  onPressCard: () => void
 };
 
-export function CardProduct({ product }: Props) {
+export function CardProduct({ product, onPressCard = () => null }: Props) {
   const WIDTH_IMAGE = Dimensions.get("window").width / 2 - 34;
-  const isInative = false;
 
   return (
-    <VStack>
+    <TouchableOpacity activeOpacity={0.8} onPress={onPressCard}>
       <VStack position="relative" rounded="sm">
         {!product?.is_active && (
           <View
@@ -92,6 +92,6 @@ export function CardProduct({ product }: Props) {
           <Text fontSize="sm">R$</Text> {FormatCurrency(product.price)}
         </Text>
       </VStack>
-    </VStack>
+    </TouchableOpacity>
   );
 }

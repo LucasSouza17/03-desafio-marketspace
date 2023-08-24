@@ -11,7 +11,7 @@ import {
   View,
   useToast,
 } from "native-base";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import { ProductDTO } from "@dtos/ProductDTO";
 import { FiltersDTO } from "@dtos/FiltersDTO";
@@ -26,8 +26,10 @@ import { SearchInput } from "@components/SearchInput";
 import { CardProduct } from "@components/CardProduct";
 
 import SadEmoji from "../assets/sad-emoji.png";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 export function Home() {
+  const navigation = useNavigation<AppNavigatorRoutesProps>()
   const toast = useToast();
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
@@ -85,6 +87,12 @@ export function Home() {
     }
   }
 
+  async function handleGoToProductDetails(productId: string) {
+    navigation.navigate('product_details', {
+      productId
+    })
+  }
+
   useFocusEffect(
     useCallback(() => {
       fetchMyProducts();
@@ -140,7 +148,7 @@ export function Home() {
         }
         renderItem={({ item, index }) => (
           <Box key={item.id} mr={index % 2 === 0 ? "5" : "0"} mb="8">
-            <CardProduct product={item} />
+            <CardProduct product={item} onPressCard={() => handleGoToProductDetails(item.id)} />
           </Box>
         )}
       />

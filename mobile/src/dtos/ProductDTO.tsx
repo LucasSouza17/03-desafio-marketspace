@@ -14,10 +14,12 @@ export type ProductDTO = {
     id: String;
   }[];
   payment_methods: {
-    key: string;
+    key: "boleto" | "pix" | "cash" | "card" | "deposit";
     name: string;
   }[];
   user: {
     avatar: string;
+    name: string;
+    tel: string;
   };
 };
