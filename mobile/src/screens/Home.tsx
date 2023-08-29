@@ -1,11 +1,8 @@
 import { useCallback, useState } from "react";
-import { FlatList, Platform, RefreshControl, ScrollView } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import {
   Box,
-  Center,
-  HStack,
   Image,
-  KeyboardAvoidingView,
   Text,
   VStack,
   View,
@@ -19,6 +16,7 @@ import { api } from "@services/api";
 
 import { AppError } from "@utils/AppError";
 import { removeEmptyProperties } from "@utils/RemoveEmptyProperties";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 import { CardMyProducts } from "@components/CardMyProducts";
 import { HeaderProfile } from "@components/HeaderProfile";
@@ -26,7 +24,6 @@ import { SearchInput } from "@components/SearchInput";
 import { CardProduct } from "@components/CardProduct";
 
 import SadEmoji from "../assets/sad-emoji.png";
-import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 export function Home() {
   const navigation = useNavigation<AppNavigatorRoutesProps>()

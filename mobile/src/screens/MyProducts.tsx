@@ -12,7 +12,8 @@ import { Select } from "@components/Select";
 import SadEmoji from "../assets/sad-emoji.png";
 import { AppError } from "@utils/AppError";
 import { api } from "@services/api";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 const FILTERS = [
   {
@@ -32,6 +33,7 @@ const FILTERS = [
 type Filters = "all" | "actives" | "inactives"
 
 export function MyProducts() {
+  const navigation = useNavigation<AppNavigatorRoutesProps>()
   const toast = useToast();
 
   const [selectedFilter, setSelectedFilter] = useState<Filters>("all");
@@ -70,6 +72,12 @@ export function MyProducts() {
       } else {
         return !product.is_active
       }
+    })
+  }
+
+  function handleGoToMyProductDetails(productId: string) {
+    navigation.navigate('my_product_details', {
+      productId
     })
   }
 
@@ -127,7 +135,7 @@ export function MyProducts() {
         }
         renderItem={({ item, index }) => (
           <Box key={item.id} mr={index % 2 === 0 ? "5" : "0"} mb="8">
-            <CardProduct product={item} onPressCard={() => null} />
+            <CardProduct product={item} onPressCard={() => handleGoToMyProductDetails(item.id)} />
           </Box>
         )}
       />

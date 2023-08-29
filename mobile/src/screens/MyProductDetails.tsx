@@ -1,12 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-import {
-  Flex,
-  HStack,
-  Text,
-  View,
-  useToast,
-} from "native-base";
+import { Flex, VStack, View, useTheme, useToast } from "native-base";
 
 import { AppError } from "@utils/AppError";
 import { ProductDTO } from "@dtos/ProductDTO";
@@ -14,23 +8,29 @@ import { api } from "@services/api";
 
 import { HeaderRoutes } from "@components/HeaderRoutes";
 import { Loading } from "@components/Loading";
-import { FormatCurrency } from "@utils/FormatCurrency";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@components/Button";
-import { WhatsappLogo } from "phosphor-react-native";
+import {
+  PencilSimpleLine,
+  Power,
+  TrashSimple,
+} from "phosphor-react-native";
 import { ProductContent } from "@components/ProductContent";
-import { Linking } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 type RouteParamsProps = {
   productId: number;
 };
 
-export function ProductDetails() {
+export function MyProductDetails() {
   const { bottom } = useSafeAreaInsets();
+  const { colors } = useTheme();
   const toast = useToast();
 
   const [product, setProduct] = useState<ProductDTO>({} as ProductDTO);
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);
+  const [isLoadingActiveAndInactiveProduct, setIsLoadingActiveAndInactiveProduct] =
+    useState(false);
 
   const route = useRoute();
   const { productId } = route.params as RouteParamsProps;
@@ -57,20 +57,31 @@ export function ProductDetails() {
     }
   }
 
-  const handleGoToWhatsapp = useCallback(async () => {
-    const url = `https://wa.me/${product.user.tel}`;
-    const supported = await Linking.canOpenURL(url);
+  async function handleActiveAndInactiveProduct() {
+    try {
+      setIsLoadingActiveAndInactiveProduct(true);
+      await api.patch(`products/${productId}`, {
+        is_active: !product.is_active,
+      });
+      setProduct({
+        ...product,
+        is_active: !product.is_active
+      })
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Não foi possível atualizar o produto, tente novamente mais tarde.";
 
-    if (supported) {
-      await Linking.openURL(url);
-    } else {
       toast.show({
-        title: "Ops, não foi possível te encaminhar para o whatsapp.",
+        title,
         placement: "top",
         bgColor: "red.500",
       });
+    } finally {
+      setIsLoadingActiveAndInactiveProduct(false);
     }
-  }, [product]);
+  }
 
   useEffect(() => {
     fetchProductDetails();
@@ -79,32 +90,38 @@ export function ProductDetails() {
   return (
     <View flex={1} bg="gray.200">
       <Flex px={6}>
-        <HeaderRoutes goBackButton />
+        <HeaderRoutes
+          goBackButton
+          actionButton={
+            <TouchableOpacity activeOpacity={0.75}>
+              <PencilSimpleLine />
+            </TouchableOpacity>
+          }
+        />
       </Flex>
 
       {isLoadingProduct ? <Loading /> : <ProductContent product={product} />}
-      <HStack
+      <VStack
         pb={bottom / 4 + 20}
-        bg="gray.100"
-        p={6}
-        space={14}
+        bg="gray.200"
+        px={6}
+        space={2}
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text
-          fontSize="xl"
-          fontFamily={!product?.is_active ? "body" : "heading"}
-          color="blue.700"
-        >
-          <Text fontSize="sm">R$</Text> {FormatCurrency(product.price)}
-        </Text>
         <Button
-          flex={1}
-          title="Entrar em contato"
-          leftIcon={<WhatsappLogo color="white" weight="fill" size={18} />}
-          onPress={handleGoToWhatsapp}
+          title={product.is_active ? "Desativar anúncio" : "Reativar anúncio"}
+          variant={product.is_active ? "black" : "blue"}
+          leftIcon={<Power color={colors.gray[100]} size={18} />}
+          isLoading={isLoadingActiveAndInactiveProduct}
+          onPress={handleActiveAndInactiveProduct}
         />
-      </HStack>
+        <Button
+          title="Excluir anúncio"
+          variant="gray"
+          leftIcon={<TrashSimple color={colors.gray[500]} size={18} />}
+        />
+      </VStack>
     </View>
   );
 }
