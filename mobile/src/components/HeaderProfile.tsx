@@ -8,10 +8,17 @@ import { api } from "@services/api";
 
 import { Button } from "./Button";
 import { UserAvatar } from "./UserAvatar";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 export function HeaderProfile() {
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
   const { top } = useSafeAreaInsets();
   const { user } = useAuth();
+
+  function handleNavigateToCreateNewProduct() {
+    navigation.navigate("new_product");
+  }
 
   return (
     <HStack flexDir="row" pt={top + 20} justifyContent="space-between" space="8">
@@ -33,6 +40,7 @@ export function HeaderProfile() {
         title="Criar anúncio"
         variant="black"
         leftIcon={<Plus color="white" size={16} />}
+        onPress={handleNavigateToCreateNewProduct}
       />
     </HStack>
   );

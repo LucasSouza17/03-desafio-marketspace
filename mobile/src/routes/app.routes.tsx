@@ -6,6 +6,7 @@ import {
 import { TabRoutes } from "./tab.routes";
 import { ProductDetails } from "@screens/ProductDetails";
 import { MyProductDetails } from "@screens/MyProductDetails";
+import { NewProduct } from "@screens/NewProduct";
 
 type AppRoutes = {
   home_navigate: undefined;
@@ -30,6 +31,7 @@ export function AppRoutes() {
       <Screen name="home_navigate" component={TabRoutes} />
       <Screen name="product_details" component={ProductDetails} />
       <Screen name="my_product_details" component={MyProductDetails} />
+      <Screen name="new_product" component={NewProduct} />
     </Navigator>
   );
 }

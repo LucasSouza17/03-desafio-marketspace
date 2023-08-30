@@ -43,7 +43,7 @@ export function HeaderRoutes({ actionButton, goBackButton, title }: Props) {
         {title && (
           <View flex={1} ml={!goBackButton ? 6 : 0} mr={!actionButton ? 6 : 0}>
             <Text textAlign="center" fontSize="lg" fontFamily="heading" color="gray.700">
-              Meus Anúncios
+              {title}
             </Text>
           </View>
         )}
