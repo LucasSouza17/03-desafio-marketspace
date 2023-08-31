@@ -116,43 +116,46 @@ export function SignIn() {
                 <Text textAlign="center" fontSize="sm" color="gray.600">
                   Acesse sua conta
                 </Text>
-                <Controller
-                  control={control}
-                  name="email"
-                  render={({ field: { onChange, value } }) => (
-                    <Input
-                      placeholder="E-mail"
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      onChangeText={onChange}
-                      value={value}
-                      errorMessage={errors.email?.message}
-                      mt="4"
-                    />
-                  )}
-                />
+                <VStack space={4}>
+                  <Controller
+                    control={control}
+                    name="email"
+                    render={({ field: { onChange, value } }) => (
+                      <Input
+                        placeholder="E-mail"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        onChangeText={onChange}
+                        value={value}
+                        errorMessage={errors.email?.message}
+                        mt="4"
+                      />
+                    )}
+                  />
 
-                <Controller
-                  control={control}
-                  name="password"
-                  render={({ field: { onChange, value } }) => (
-                    <Input
-                      placeholder="Senha"
-                      secureTextEntry
-                      onChangeText={onChange}
-                      value={value}
-                      onSubmitEditing={handleSubmit(handleSignIn)}
-                      returnKeyType="join"
-                      errorMessage={errors.password?.message}
-                      textContentType="oneTimeCode"
-                    />
-                  )}
-                />
+                  <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { onChange, value } }) => (
+                      <Input
+                        placeholder="Senha"
+                        secureTextEntry
+                        onChangeText={onChange}
+                        value={value}
+                        onSubmitEditing={handleSubmit(handleSignIn)}
+                        returnKeyType="join"
+                        errorMessage={errors.password?.message}
+                        textContentType="oneTimeCode"
+                      />
+                    )}
+                  />
+                </VStack>
 
                 <Button
                   title="Entrar"
                   onPress={handleSubmit(handleSignIn)}
                   isLoading={isLoading}
+                  mt={8}
                 />
               </VStack>
             </VStack>

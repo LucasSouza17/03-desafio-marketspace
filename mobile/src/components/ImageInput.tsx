@@ -1,25 +1,34 @@
-import { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { Box, Center, FormControl, Image, Skeleton, Text, useToast } from "native-base";
+import { useState } from "react";
+import {
+  Center,
+  FormControl,
+  IFormControlProps,
+  Image,
+  Skeleton,
+  useTheme,
+  useToast,
+} from "native-base";
+import { Plus } from "phosphor-react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 
-import { PencilSimpleLine, User } from "phosphor-react-native";
-
 import { ImageDTO } from "@dtos/ImageDTO";
 
-type Props = {
+type Props = IFormControlProps & {
+  errorMessage?: string | null;
   onChange: (value: ImageDTO) => void;
   value?: string;
-  errorMessage?: string;
 };
 
-const PHOTO_SIZE = 20;
+const PHOTO_SIZE = 24;
 
-export function UserPhotoSelect({ value, onChange, errorMessage }: Props) {
-  const [photoIsLoading, setPhotoIsLoading] = useState(false);
+export function ImageInput({ errorMessage, onChange, value, ...rest }: Props) {
   const toast = useToast();
+  const { colors } = useTheme();
+
+  const [photoIsLoading, setPhotoIsLoading] = useState(false);
   const invalid = !!errorMessage;
 
   async function handleUserPhotoSelect() {
@@ -66,19 +75,11 @@ export function UserPhotoSelect({ value, onChange, errorMessage }: Props) {
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={handleUserPhotoSelect} style={{paddingBottom: 12}}>
-      <FormControl isInvalid={invalid}>
-        <Center
-          position="relative"
-          w={88}
-          h={88}
-          bg="gray.300"
-          borderRadius="full"
-          borderWidth="4"
-          borderColor={invalid ? "#dc2626" : "blue.300"}
-        >
+    <TouchableOpacity activeOpacity={0.65} onPress={handleUserPhotoSelect}>
+      <FormControl w={24} isInvalid={invalid} {...rest}>
+        <Center w={24} h={24} rounded="md" bg="gray.300">
           {!value ? (
-            <User size={48} color="#9F9BA1" weight="bold" />
+            <Plus color={colors.gray[400]} />
           ) : photoIsLoading ? (
             <Skeleton
               w={PHOTO_SIZE}
@@ -88,28 +89,14 @@ export function UserPhotoSelect({ value, onChange, errorMessage }: Props) {
               endColor="gray.400"
             />
           ) : (
-            <Box w={PHOTO_SIZE} h={PHOTO_SIZE}>
-              <Image
-                source={{ uri: value }}
-                alt="Imagem do usuário"
-                w={PHOTO_SIZE}
-                h={PHOTO_SIZE}
-                rounded="full"
-              />
-            </Box>
+            <Image
+              source={{ uri: value }}
+              alt="Imagem do usuário"
+              w={PHOTO_SIZE}
+              h={PHOTO_SIZE}
+              rounded="full"
+            />
           )}
-
-          <Center
-            w={10}
-            h={10}
-            borderRadius="full"
-            position="absolute"
-            bg={invalid ? "#dc2626" : "blue.300"}
-            right="-10"
-            bottom="-5"
-          >
-            <PencilSimpleLine size={20} color="#EDECEE" />
-          </Center>
         </Center>
         <FormControl.ErrorMessage>{errorMessage}</FormControl.ErrorMessage>
       </FormControl>

@@ -10,19 +10,21 @@ import { Eye, EyeSlash } from "phosphor-react-native";
 
 type Props = IInputProps & {
   errorMessage?: string | null;
+  isInputPrice?: boolean
 };
 
 export function Input({
   errorMessage = null,
   isInvalid,
   secureTextEntry,
+  isInputPrice = false,
   ...rest
 }: Props) {
   const invalid = !!errorMessage || isInvalid;
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <FormControl isInvalid={invalid} mb="4">
+    <FormControl isInvalid={invalid}>
       <NativeBaseInput
         bg="gray.100"
         h={12}

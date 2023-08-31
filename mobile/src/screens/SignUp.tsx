@@ -15,12 +15,13 @@ import LogoSvg from "@assets/logo.svg";
 import { DismissKeyboard } from "@components/DismissKeyboard";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
-import { ResponseImage, UserPhotoSelect } from "@components/UserPhotoSelect";
+import { UserPhotoSelect } from "@components/UserPhotoSelect";
 import { api } from "@services/api";
 import { useAuth } from "@hooks/useAuth";
+import { ImageDTO } from "@dtos/ImageDTO";
 
 type FormDataProps = {
-  avatar: ResponseImage;
+  avatar: ImageDTO;
   name: string;
   email: string;
   tel: string;
@@ -122,7 +123,6 @@ export function SignUp() {
   }
 
   return (
-    <DismissKeyboard>
       <KeyboardAvoidingView
         flex={1}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -154,7 +154,7 @@ export function SignUp() {
             }}
             showsVerticalScrollIndicator={false}
           >
-            <VStack alignItems="center">
+            <VStack alignItems="center" space={4}>
               <Controller
                 control={control}
                 name="avatar"
@@ -255,6 +255,5 @@ export function SignUp() {
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
-    </DismissKeyboard>
   );
 }
