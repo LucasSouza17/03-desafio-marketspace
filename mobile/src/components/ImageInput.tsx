@@ -39,7 +39,6 @@ export function ImageInput({ errorMessage, onChange, value, ...rest }: Props) {
         quality: 1,
         aspect: [4, 4],
         allowsEditing: true,
-        allowsMultipleSelection: false,
       });
 
       if (photoSelected.canceled) {
@@ -76,15 +75,15 @@ export function ImageInput({ errorMessage, onChange, value, ...rest }: Props) {
 
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handleUserPhotoSelect}>
-      <FormControl w={24} isInvalid={invalid} {...rest}>
-        <Center w={24} h={24} rounded="md" bg="gray.300">
+      <FormControl  isInvalid={invalid} {...rest}>
+        <Center w={PHOTO_SIZE} h={PHOTO_SIZE} rounded="md" bg="gray.300">
           {!value ? (
             <Plus color={colors.gray[400]} />
           ) : photoIsLoading ? (
             <Skeleton
               w={PHOTO_SIZE}
               h={PHOTO_SIZE}
-              rounded="full"
+              rounded="md"
               startColor="gray.500"
               endColor="gray.400"
             />
@@ -94,7 +93,7 @@ export function ImageInput({ errorMessage, onChange, value, ...rest }: Props) {
               alt="Imagem do usuário"
               w={PHOTO_SIZE}
               h={PHOTO_SIZE}
-              rounded="full"
+              rounded="md"
             />
           )}
         </Center>

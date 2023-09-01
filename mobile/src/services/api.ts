@@ -28,7 +28,8 @@ api.registerInterceptTokenManager = (signOut) => {
       if (requestError?.response?.status === 401) {
         if (
           requestError.response.data?.message === "token.expired" ||
-          requestError.response.data?.message === "token.invalid"
+          requestError.response.data?.message === "token.invalid" ||
+          requestError.response.data?.message === "Refresh token expirado."
         ) {
           const { refresh_token } = await storageAuthTokenGet();
 
@@ -59,20 +60,23 @@ api.registerInterceptTokenManager = (signOut) => {
               const { data } = await api.post(`/sessions/refresh-token`, {
                 refresh_token,
               });
-              await storageAuthTokenSave({token: data.token, refresh_token: data.refresh_token})
+              await storageAuthTokenSave({
+                token: data.token,
+                refresh_token: data.refresh_token,
+              });
 
-              if(originalRequestConfig.data) {
+              if (originalRequestConfig.data) {
                 originalRequestConfig.data = JSON.parse(originalRequestConfig.data);
               }
 
               originalRequestConfig.headers = { Authorization: `Bearer ${data.token}` };
-              api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+              api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 
-              failedQueue.forEach(request => {
+              failedQueue.forEach((request) => {
                 request.onSuccess(data.token);
               });
 
-              resolve(api(originalRequestConfig))
+              resolve(api(originalRequestConfig));
             } catch (error: any) {
               failedQueue.forEach((request) => {
                 request.onFailure(error);

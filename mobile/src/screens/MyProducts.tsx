@@ -30,10 +30,10 @@ const FILTERS = [
   },
 ];
 
-type Filters = "all" | "actives" | "inactives"
+type Filters = "all" | "actives" | "inactives";
 
 export function MyProducts() {
-  const navigation = useNavigation<AppNavigatorRoutesProps>()
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
   const toast = useToast();
 
   const [selectedFilter, setSelectedFilter] = useState<Filters>("all");
@@ -62,23 +62,27 @@ export function MyProducts() {
   }
 
   function showProductByFilter(products: ProductDTO[]) {
-    if(selectedFilter === "all") {
-      return products
+    if (selectedFilter === "all") {
+      return products;
     }
 
-    return products.filter(product => {
-      if(selectedFilter === "actives") {
-        return product.is_active
+    return products.filter((product) => {
+      if (selectedFilter === "actives") {
+        return product.is_active;
       } else {
-        return !product.is_active
+        return !product.is_active;
       }
-    })
+    });
   }
 
   function handleGoToMyProductDetails(productId: string) {
-    navigation.navigate('my_product_details', {
-      productId
-    })
+    navigation.navigate("my_product_details", {
+      productId,
+    });
+  }
+
+  function handleNavigateToCreateNewProduct() {
+    navigation.navigate("new_product");
   }
 
   useFocusEffect(
@@ -92,7 +96,7 @@ export function MyProducts() {
       <HeaderRoutes
         title="Meus anúncios"
         actionButton={
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity activeOpacity={0.7} onPress={handleNavigateToCreateNewProduct}>
             <Plus />
           </TouchableOpacity>
         }
@@ -135,7 +139,10 @@ export function MyProducts() {
         }
         renderItem={({ item, index }) => (
           <Box key={item.id} mr={index % 2 === 0 ? "5" : "0"} mb="8">
-            <CardProduct product={item} onPressCard={() => handleGoToMyProductDetails(item.id)} />
+            <CardProduct
+              product={item}
+              onPressCard={() => handleGoToMyProductDetails(item.id)}
+            />
           </Box>
         )}
       />

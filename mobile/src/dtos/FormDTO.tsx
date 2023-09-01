@@ -1,3 +1,5 @@
+import { ImageDTO } from "./ImageDTO";
+
 export type FormDTO = {
   name: string;
   description: string;
@@ -5,4 +7,5 @@ export type FormDTO = {
   price: number;
   accept_trade: boolean;
   payment_methods: string[];
+  images: ImageDTO[]
 };
