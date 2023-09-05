@@ -13,7 +13,11 @@ export function SliderImage({images}: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const formatImages = images.map(item => {
-    return `${api.defaults.baseURL}/images/${item}`
+    if(!item.startsWith('file')) {
+      return `${api.defaults.baseURL}/images/${item}`
+    } else {
+      return item
+    }
   })
 
   return (

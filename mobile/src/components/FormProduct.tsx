@@ -10,6 +10,7 @@ import { ImageInput } from "@components/ImageInput";
 import { Input } from "@components/Input";
 import { Radio } from "@components/Radio";
 import { Switch } from "@components/Switch";
+import { FormProductDTO } from "@dtos/FormProductDTO";
 
 const PAYMENT_METHODS = [
   {
@@ -34,19 +35,9 @@ const PAYMENT_METHODS = [
   },
 ];
 
-export type FormDataProps = {
-  name: string;
-  description: string;
-  is_new: string;
-  price: string;
-  accept_trade: boolean;
-  payment_methods: string[];
-  images: ImageDTO[];
-};
-
 type Props = {
-  control: Control<FormDataProps, any>;
-  errors: FieldErrors<FormDataProps>;
+  control: Control<FormProductDTO, any>;
+  errors: FieldErrors<FormProductDTO>;
 };
 
 export function FormProduct({ control, errors }: Props) {
@@ -57,9 +48,13 @@ export function FormProduct({ control, errors }: Props) {
 
   function handleAddImage(index: number, value: ImageDTO) {
     update(index, value);
-    if (index < 2) {
-      append({} as ImageDTO);
+    if (index < 2 && fields.length < 3) {
+      append({fileExtension: '', type: '', uri: ''} as ImageDTO);
     }
+  }
+
+  function handleRemoveImage(index: number) {
+    update(index, {} as ImageDTO)
   }
 
   return (
@@ -90,6 +85,7 @@ export function FormProduct({ control, errors }: Props) {
                   <ImageInput
                     key={item.id}
                     onChange={(value) => handleAddImage(index, value)}
+                    onRemove={() => handleRemoveImage(index)}
                     value={item.uri}
                     errorMessage={errors.images?.message}
                   />
@@ -168,7 +164,7 @@ export function FormProduct({ control, errors }: Props) {
                       </Text>
                     }
                     keyboardType="numeric"
-                    onChangeText={onChange}
+                    onChangeText={(value) => onChange(Number(value))}
                     errorMessage={errors.price?.message}
                   />
                 )}
@@ -184,7 +180,7 @@ export function FormProduct({ control, errors }: Props) {
                 name="accept_trade"
                 defaultValue={false}
                 render={({ field: { onChange, value } }) => (
-                  <Switch onValueChange={onChange} value={value} />
+                  <Switch onToggle={(value) => onChange(Boolean(value))} value={value} />
                 )}
               />
             </VStack>

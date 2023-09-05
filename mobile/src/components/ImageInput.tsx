@@ -9,7 +9,7 @@ import {
   useTheme,
   useToast,
 } from "native-base";
-import { Plus } from "phosphor-react-native";
+import { Plus, X } from "phosphor-react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -19,12 +19,13 @@ import { ImageDTO } from "@dtos/ImageDTO";
 type Props = IFormControlProps & {
   errorMessage?: string | null;
   onChange: (value: ImageDTO) => void;
+  onRemove?: () => void;
   value?: string;
 };
 
 const PHOTO_SIZE = 24;
 
-export function ImageInput({ errorMessage, onChange, value, ...rest }: Props) {
+export function ImageInput({ errorMessage, onChange, onRemove, value, ...rest }: Props) {
   const toast = useToast();
   const { colors } = useTheme();
 
@@ -36,7 +37,7 @@ export function ImageInput({ errorMessage, onChange, value, ...rest }: Props) {
     try {
       const photoSelected = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1,
+        quality: 0.2,
         aspect: [4, 4],
         allowsEditing: true,
       });
@@ -74,8 +75,23 @@ export function ImageInput({ errorMessage, onChange, value, ...rest }: Props) {
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.65} onPress={handleUserPhotoSelect}>
-      <FormControl  isInvalid={invalid} {...rest}>
+    <TouchableOpacity
+      style={{ position: "relative" }}
+      activeOpacity={0.65}
+      onPress={handleUserPhotoSelect}
+    >
+      {value && (
+        <TouchableOpacity
+          onPress={onRemove}
+          style={{ top: 4, right: 4, position: "absolute", zIndex: 10 }}
+          activeOpacity={0.75}
+        >
+          <Center rounded="full" bg="gray.600" w={4} h={4}>
+            <X size={12} color={colors.gray[100]} />
+          </Center>
+        </TouchableOpacity>
+      )}
+      <FormControl isInvalid={invalid} {...rest}>
         <Center w={PHOTO_SIZE} h={PHOTO_SIZE} rounded="md" bg="gray.300">
           {!value ? (
             <Plus color={colors.gray[400]} />

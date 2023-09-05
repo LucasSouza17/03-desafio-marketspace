@@ -7,17 +7,21 @@ import { TabRoutes } from "./tab.routes";
 import { ProductDetails } from "@screens/ProductDetails";
 import { MyProductDetails } from "@screens/MyProductDetails";
 import { NewProduct } from "@screens/NewProduct";
+import { NewProductPreview } from "@screens/NewProductPreview";
+import { FormProductDTO } from "@dtos/FormProductDTO";
 
 type AppRoutes = {
   home_navigate: undefined;
   product_details: {
-    productId: string
+    productId: string;
   };
   my_product_details: {
-    productId: string
+    productId: string;
   };
   new_product: undefined;
-  new_product_preview: undefined;
+  new_product_preview: {
+    product: FormProductDTO
+  };
   edit_product: undefined;
 };
 
@@ -32,6 +36,7 @@ export function AppRoutes() {
       <Screen name="product_details" component={ProductDetails} />
       <Screen name="my_product_details" component={MyProductDetails} />
       <Screen name="new_product" component={NewProduct} />
+      <Screen name="new_product_preview" component={NewProductPreview} />
     </Navigator>
   );
 }

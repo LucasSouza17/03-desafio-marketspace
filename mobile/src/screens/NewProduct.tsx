@@ -9,26 +9,23 @@ import { ImageDTO } from "@dtos/ImageDTO";
 import { Button } from "@components/Button";
 import { HeaderRoutes } from "@components/HeaderRoutes";
 import { FormProduct } from "@components/FormProduct";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
+import { FormProductDTO } from "@dtos/FormProductDTO";
 
-export type FormDataProps = {
-  name: string;
-  description: string;
-  is_new: string;
-  price: string;
-  accept_trade: boolean;
-  payment_methods: string[];
-  images: ImageDTO[];
-};
-
-const newProductSchema: z.ZodType<FormDataProps> = z.object({
+const newProductSchema: z.ZodType<FormProductDTO> = z.object({
   name: z.string({ required_error: "Informe o título do anúncio." }),
   description: z.string({ required_error: "Informe uma descrição para o anúncio." }),
-  is_new: z.string().min(1, {message: "Informe o estado do produto."}),
-  price: z.string({ required_error: "Informe o valor do produto." }),
+  is_new: z.string({required_error: "Informe o estado do produto."}),
+  price: z.number({ required_error: "Informe o valor do produto." }),
   accept_trade: z.boolean(),
   payment_methods: z
-    .string()
-    .array().min(1, {message: "Selecione pelo menos um meio de pagamento."}),
+    .object({
+      key: z.string(),
+      name: z.string()
+    })
+    .array()
+    .min(1, { message: "Selecione pelo menos um meio de pagamento." }),
   images: z
     .object(
       {
@@ -38,25 +35,38 @@ const newProductSchema: z.ZodType<FormDataProps> = z.object({
       },
       { required_error: "Informe o avatar" }
     )
-    .array().min(1, {message: "Adicione pelo menos uma imagem do produto."}),
+    .array()
+    .min(1, { message: "Adicione pelo menos uma imagem do produto." }),
 });
 
 export function NewProduct() {
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
   const { bottom } = useSafeAreaInsets();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormDataProps>({
+  } = useForm<FormProductDTO>({
     resolver: zodResolver(newProductSchema),
     defaultValues: {
-      images: []
-    }
+      images: [],
+      accept_trade: false
+    },
   });
 
-  async function handleGoToPreview({...data}: FormDataProps) {
-    console.log("oi")
+  async function handleGoToPreview({ ...data }: FormProductDTO) {
+    const formatProducts: FormProductDTO = {
+      ...data,
+      images: data.images.filter(item => item.uri !== '')
+    }
+    navigation.navigate('new_product_preview', {
+      product: formatProducts
+    })
+  }
+
+  function handleCancelNewProduct() {
+    navigation.goBack();
   }
 
   return (
@@ -75,8 +85,13 @@ export function NewProduct() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Button flex={1} title="Cancelar" variant="gray" />
-        <Button flex={1} title="Avançar" variant="black" onPress={handleSubmit(handleGoToPreview)} />
+        <Button flex={1} title="Cancelar" variant="gray" onPress={handleCancelNewProduct} />
+        <Button
+          flex={1}
+          title="Avançar"
+          variant="black"
+          onPress={handleSubmit(handleGoToPreview)}
+        />
       </HStack>
     </View>
   );
