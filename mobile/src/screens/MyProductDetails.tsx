@@ -103,6 +103,12 @@ export function MyProductDetails() {
     }
   }
 
+  function handleEditProduct() {
+    navigation.navigate('edit_product', {
+      product: product
+    })
+  }
+
   useEffect(() => {
     fetchProductDetails();
   }, []);
@@ -113,7 +119,7 @@ export function MyProductDetails() {
         <HeaderRoutes
           goBackButton
           actionButton={
-            <TouchableOpacity activeOpacity={0.75}>
+            <TouchableOpacity activeOpacity={0.75} onPress={handleEditProduct}>
               <PencilSimpleLine />
             </TouchableOpacity>
           }

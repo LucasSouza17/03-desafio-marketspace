@@ -15,6 +15,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 
 import { ImageDTO } from "@dtos/ImageDTO";
+import { api } from "@services/api";
 
 type Props = IFormControlProps & {
   errorMessage?: string | null;
@@ -105,7 +106,7 @@ export function ImageInput({ errorMessage, onChange, onRemove, value, ...rest }:
             />
           ) : (
             <Image
-              source={{ uri: value }}
+              source={{ uri: value.startsWith('file') ? value : `${api.defaults.baseURL}/images/${value}` }}
               alt="Imagem do usuário"
               w={PHOTO_SIZE}
               h={PHOTO_SIZE}

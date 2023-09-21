@@ -1,7 +1,13 @@
 import { Platform } from "react-native";
 import { HStack, KeyboardAvoidingView, ScrollView, Text, VStack } from "native-base";
 
-import { Control, Controller, FieldErrors, useFieldArray } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  useController,
+  useFieldArray,
+} from "react-hook-form";
 
 import { ImageDTO } from "@dtos/ImageDTO";
 
@@ -41,20 +47,24 @@ type Props = {
 };
 
 export function FormProduct({ control, errors }: Props) {
-  const { fields, append, update } = useFieldArray({
+  const {
+    field: { value: payment_values },
+  } = useController({
+    control: control,
+    name: "payment_methods",
+  });
+
+  const { fields, update, remove } = useFieldArray({
     control,
     name: "images",
   });
 
   function handleAddImage(index: number, value: ImageDTO) {
     update(index, value);
-    if (index < 2 && fields.length < 3) {
-      append({fileExtension: '', type: '', uri: ''} as ImageDTO);
-    }
   }
 
-  function handleRemoveImage(index: number) {
-    update(index, {} as ImageDTO)
+  async function handleRemoveImage(index: number) {
+    remove(index);
   }
 
   return (
@@ -75,21 +85,20 @@ export function FormProduct({ control, errors }: Props) {
               Escolha até 3 imagens para mostrar o quando o seu produto é incrível!
             </Text>
             <HStack space={2} mt={4}>
-              {fields.length === 0 ? (
+              {fields.map((item, index) => (
                 <ImageInput
-                  onChange={(value) => handleAddImage(0, value)}
+                  key={item.id}
+                  onChange={(value) => handleAddImage(index, value)}
+                  onRemove={() => handleRemoveImage(index)}
+                  value={item.uri}
                   errorMessage={errors.images?.message}
                 />
-              ) : (
-                fields.map((item, index) => (
-                  <ImageInput
-                    key={item.id}
-                    onChange={(value) => handleAddImage(index, value)}
-                    onRemove={() => handleRemoveImage(index)}
-                    value={item.uri}
-                    errorMessage={errors.images?.message}
-                  />
-                ))
+              ))}
+              {fields.length < 3 && (
+                <ImageInput
+                  onChange={(value) => handleAddImage(fields.length, value)}
+                  errorMessage={errors.images?.message}
+                />
               )}
             </HStack>
           </VStack>
@@ -165,6 +174,7 @@ export function FormProduct({ control, errors }: Props) {
                     }
                     keyboardType="numeric"
                     onChangeText={(value) => onChange(Number(value))}
+                    value={value ? String(value) : undefined}
                     errorMessage={errors.price?.message}
                   />
                 )}
@@ -198,6 +208,7 @@ export function FormProduct({ control, errors }: Props) {
                     options={PAYMENT_METHODS}
                     onChange={onChange}
                     errorMessage={errors.payment_methods?.message}
+                    selectedValues={payment_values || []}
                   />
                 )}
               />

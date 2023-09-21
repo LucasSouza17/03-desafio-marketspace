@@ -4,11 +4,15 @@ import {
 } from "@react-navigation/native-stack";
 
 import { TabRoutes } from "./tab.routes";
+import { FormProductDTO } from "@dtos/FormProductDTO";
+
 import { ProductDetails } from "@screens/ProductDetails";
 import { MyProductDetails } from "@screens/MyProductDetails";
 import { NewProduct } from "@screens/NewProduct";
 import { NewProductPreview } from "@screens/NewProductPreview";
-import { FormProductDTO } from "@dtos/FormProductDTO";
+import { EditProduct } from "@screens/EditProduct";
+import { EditProductPreview } from "@screens/EditProductPreview";
+import { ProductDTO } from "@dtos/ProductDTO";
 
 type AppRoutes = {
   home_navigate: undefined;
@@ -22,7 +26,14 @@ type AppRoutes = {
   new_product_preview: {
     product: FormProductDTO
   };
-  edit_product: undefined;
+  edit_product: {
+    product: ProductDTO;
+  };
+  edit_product_preview: {
+    product: FormProductDTO;
+    productId: string;
+    olderImagesIds: string[]
+  };
 };
 
 export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutes>;
@@ -37,6 +48,8 @@ export function AppRoutes() {
       <Screen name="my_product_details" component={MyProductDetails} />
       <Screen name="new_product" component={NewProduct} />
       <Screen name="new_product_preview" component={NewProductPreview} />
+      <Screen name="edit_product" component={EditProduct} />
+      <Screen name="edit_product_preview" component={EditProductPreview} />
     </Navigator>
   );
 }

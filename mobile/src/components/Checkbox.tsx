@@ -1,5 +1,5 @@
 import { FormControl, Checkbox as NativeBaseCheckbox, VStack } from "native-base";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type ValueProps = {
   key: string;
@@ -14,15 +14,22 @@ type Props = {
   }>;
   isInvalid?: boolean;
   onChange: (values: ValueProps[]) => void;
+  selectedValues: ValueProps[];
 };
 
-export function Checkbox({ errorMessage, options, isInvalid, onChange }: Props) {
+export function Checkbox({
+  errorMessage,
+  options,
+  isInvalid,
+  onChange,
+  selectedValues,
+}: Props) {
   const invalid = !!errorMessage || isInvalid;
-  const [values, setValues] = useState<ValueProps[]>([]);
+  const [values, setValues] = useState<ValueProps[]>(selectedValues);
 
   function onValChange(value: ValueProps) {
     let newValues = values;
-    const verifyIfExists = values.includes(value);
+    const verifyIfExists = values.map((item) => item.key).includes(value.key);
 
     if (verifyIfExists) {
       let index = newValues.indexOf(value);
@@ -49,6 +56,7 @@ export function Checkbox({ errorMessage, options, isInvalid, onChange }: Props) 
             onChange={(value) => {
               onValChange({ key: option.value, name: option.label });
             }}
+            defaultIsChecked={values.map(item => item.key).includes(option.value)}
             _checked={{
               bg: "blue.300",
               borderColor: "blue.300",

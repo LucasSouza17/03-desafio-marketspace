@@ -11,7 +11,7 @@ export type ProductDTO = {
   updated_at: Date;
   product_images: {
     path: string;
-    id: String;
+    id: string;
   }[];
   payment_methods: {
     key: "boleto" | "pix" | "cash" | "card" | "deposit";
