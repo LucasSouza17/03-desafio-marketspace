@@ -24,7 +24,7 @@ type AppRoutes = {
   };
   new_product: undefined;
   new_product_preview: {
-    product: FormProductDTO
+    product: FormProductDTO;
   };
   edit_product: {
     product: ProductDTO;
@@ -32,7 +32,7 @@ type AppRoutes = {
   edit_product_preview: {
     product: FormProductDTO;
     productId: string;
-    olderImagesIds: string[]
+    olderImagesIds: string[];
   };
 };
 

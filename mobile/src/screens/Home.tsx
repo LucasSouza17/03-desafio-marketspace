@@ -1,13 +1,9 @@
-import { useCallback, useState } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useCallback, useState, useRef } from "react";
 import { FlatList, RefreshControl } from "react-native";
-import {
-  Box,
-  Image,
-  Text,
-  VStack,
-  View,
-  useToast,
-} from "native-base";
+import { default as BottomSheetComponent } from "@gorhom/bottom-sheet";
+import {Portal} from "@gorhom/portal";
+import { Box, Image, Text, VStack, View, useToast } from "native-base";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import { ProductDTO } from "@dtos/ProductDTO";
@@ -22,11 +18,14 @@ import { CardMyProducts } from "@components/CardMyProducts";
 import { HeaderProfile } from "@components/HeaderProfile";
 import { SearchInput } from "@components/SearchInput";
 import { CardProduct } from "@components/CardProduct";
+import { BottomSheet } from "@components/BottomSheet";
 
 import SadEmoji from "../assets/sad-emoji.png";
 
 export function Home() {
-  const navigation = useNavigation<AppNavigatorRoutesProps>()
+  const bottomSheetRef = useRef<BottomSheetComponent>(null);
+
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
   const toast = useToast();
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
@@ -85,9 +84,9 @@ export function Home() {
   }
 
   async function handleGoToProductDetails(productId: string) {
-    navigation.navigate('product_details', {
-      productId
-    })
+    navigation.navigate("product_details", {
+      productId,
+    });
   }
 
   useFocusEffect(
@@ -98,57 +97,68 @@ export function Home() {
   );
 
   return (
-    <View flex={1} px={6} bg="gray.200">
-      <HeaderProfile />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View flex={1} px={6} bg="gray.200">
+        <HeaderProfile />
+        
+          <BottomSheet
+            refBottomSheet={bottomSheetRef}
+            title="Filtrar anúncios"
+          >
 
-      <FlatList
-        data={products}
-        keyExtractor={(product) => product.id}
-        numColumns={2}
-        columnWrapperStyle={{ marginTop: 24 }}
-        contentContainerStyle={{ flex: 1 }}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <VStack space="8" mt="8">
-            <CardMyProducts productsActive={myProductsActive} />
-            <VStack space="3">
-              <Text color="gray.500" fontSize="sm">
-                Seus produtos anunciados para venda
-              </Text>
-              <SearchInput
-                onChangeText={(text) => setFilters({ ...filters, query: text })}
-                value={filters.query}
-                onClickFilters={() => null}
-                onClickSearch={fetchProducts}
-                onSubmitEditing={fetchProducts}
-                returnKeyType="search"
-              />
+          </BottomSheet>
+        <FlatList
+          data={products}
+          keyExtractor={(product) => product.id}
+          numColumns={2}
+          columnWrapperStyle={{ marginTop: 24 }}
+          contentContainerStyle={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <VStack space="8" mt="8">
+              <CardMyProducts productsActive={myProductsActive} />
+              <VStack space="3">
+                <Text color="gray.500" fontSize="sm">
+                  Seus produtos anunciados para venda
+                </Text>
+                <SearchInput
+                  onChangeText={(text) => setFilters({ ...filters, query: text })}
+                  value={filters.query}
+                  onClickFilters={() => null}
+                  onClickSearch={fetchProducts}
+                  onSubmitEditing={fetchProducts}
+                  returnKeyType="search"
+                />
+              </VStack>
             </VStack>
-          </VStack>
-        }
-        ListEmptyComponent={
-          <VStack flex={1} space="4" justifyContent="center" alignItems="center">
-            <Image source={SadEmoji} alt="Emoji com cara de triste" w="24" h="24" />
-            <Text textAlign="center">
-              Não fique triste, em breve terá muitos produtos para comprar.
-            </Text>
-          </VStack>
-        }
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoadingProducts}
-            onRefresh={() => {
-              fetchProducts();
-              fetchMyProducts();
-            }}
-          />
-        }
-        renderItem={({ item, index }) => (
-          <Box key={item.id} mr={index % 2 === 0 ? "5" : "0"} mb="8">
-            <CardProduct product={item} onPressCard={() => handleGoToProductDetails(item.id)} />
-          </Box>
-        )}
-      />
-    </View>
+          }
+          ListEmptyComponent={
+            <VStack flex={1} space="4" justifyContent="center" alignItems="center">
+              <Image source={SadEmoji} alt="Emoji com cara de triste" w="24" h="24" />
+              <Text textAlign="center">
+                Não fique triste, em breve terá muitos produtos para comprar.
+              </Text>
+            </VStack>
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isLoadingProducts}
+              onRefresh={() => {
+                fetchProducts();
+                fetchMyProducts();
+              }}
+            />
+          }
+          renderItem={({ item, index }) => (
+            <Box key={item.id} mr={index % 2 === 0 ? "5" : "0"} mb="8">
+              <CardProduct
+                product={item}
+                onPressCard={() => handleGoToProductDetails(item.id)}
+              />
+            </Box>
+          )}
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 }

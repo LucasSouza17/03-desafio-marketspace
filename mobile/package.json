@@ -11,6 +11,8 @@
   "dependencies": {
     "@expo-google-fonts/karla": "^0.2.3",
     "@expo-google-fonts/roboto": "^0.2.3",
+    "@gorhom/bottom-sheet": "4",
+    "@gorhom/portal": "^1.0.14",
     "@hookform/resolvers": "^3.2.0",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-navigation/bottom-tabs": "^6.5.8",
