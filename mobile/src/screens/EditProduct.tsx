@@ -79,6 +79,7 @@ export function EditProduct() {
       ...data,
       images: data.images.filter(item => item.uri !== '')
     }
+
     navigation.navigate('edit_product_preview', {
       product: formatProducts,
       productId: product.id,

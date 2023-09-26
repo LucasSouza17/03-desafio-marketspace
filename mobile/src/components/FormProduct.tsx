@@ -183,6 +183,7 @@ export function FormProduct({ control, errors }: Props) {
                 defaultValue={[]}
                 render={({ field: { onChange } }) => (
                   <Checkbox
+                    key={String(payment_values)}
                     options={PAYMENT_METHODS}
                     onChange={onChange}
                     errorMessage={errors.payment_methods?.message}

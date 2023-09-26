@@ -94,7 +94,7 @@ export function Home() {
     useCallback(() => {
       fetchMyProducts();
       fetchProducts();
-    }, [filters])
+    }, [])
   );
 
   return (
@@ -106,6 +106,8 @@ export function Home() {
           <FormFilters
             onChange={(values) => {
               setFilters({ ...filters, ...values });
+              bottomSheetRef.current?.close();
+              fetchProducts();
             }}
           />
         </BottomSheet>
