@@ -56,7 +56,7 @@ export function Checkbox({
             onChange={(value) => {
               onValChange({ key: option.value, name: option.label });
             }}
-            defaultIsChecked={values.map(item => item.key).includes(option.value)}
+            defaultIsChecked={values.length > 0 ? values.map(item => item.key).includes(option.value) : false}
             _checked={{
               bg: "blue.300",
               borderColor: "blue.300",

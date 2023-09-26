@@ -10,36 +10,14 @@ import {
 } from "react-hook-form";
 
 import { ImageDTO } from "@dtos/ImageDTO";
+import { FormProductDTO } from "@dtos/FormProductDTO";
+import { PAYMENT_METHODS } from "@data/paymentMethods";
 
 import { Checkbox } from "@components/Checkbox";
 import { ImageInput } from "@components/ImageInput";
 import { Input } from "@components/Input";
 import { Radio } from "@components/Radio";
 import { Switch } from "@components/Switch";
-import { FormProductDTO } from "@dtos/FormProductDTO";
-
-const PAYMENT_METHODS = [
-  {
-    value: "boleto",
-    label: "Boleto",
-  },
-  {
-    value: "pix",
-    label: "Pix",
-  },
-  {
-    value: "cash",
-    label: "Dinheiro",
-  },
-  {
-    value: "deposit",
-    label: "Depósito Bancário",
-  },
-  {
-    value: "card",
-    label: "Cartão de Crédito",
-  },
-];
 
 type Props = {
   control: Control<FormProductDTO, any>;

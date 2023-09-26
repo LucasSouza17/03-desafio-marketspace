@@ -16,21 +16,17 @@ export function BottomSheet({ children, refBottomSheet, title }: Props) {
 
   const snapPoints = useMemo(() => ["70%"], []);
 
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
-
   return (
     <Portal>
       <BottomSheetComponent
         ref={refBottomSheet}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}
+        index={-1}
         containerStyle={{ zIndex: 1 }}
         enablePanDownToClose
         handleIndicatorStyle={{ backgroundColor: colors.gray[400] }}
       >
-        <View w="100%" p="6">
+        <View flex={1} w="100%" p="6">
           <HStack justifyContent="space-between" alignItems="center">
             <Text fontSize="lg" color="gray.700" fontFamily="heading">
               {title}

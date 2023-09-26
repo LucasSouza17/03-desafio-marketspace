@@ -18,6 +18,7 @@ module.exports = function (api) {
             "@hooks": "./src/hooks",
             "@contexts": "./src/contexts",
             "@routes": "./src/routes",
+            "@data": "./src/data"
           },
         },
       ],

@@ -2,7 +2,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useCallback, useState, useRef } from "react";
 import { FlatList, RefreshControl } from "react-native";
 import { default as BottomSheetComponent } from "@gorhom/bottom-sheet";
-import {Portal} from "@gorhom/portal";
+import { Portal } from "@gorhom/portal";
 import { Box, Image, Text, VStack, View, useToast } from "native-base";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
@@ -21,6 +21,7 @@ import { CardProduct } from "@components/CardProduct";
 import { BottomSheet } from "@components/BottomSheet";
 
 import SadEmoji from "../assets/sad-emoji.png";
+import { FormFilters } from "@components/FormFilters";
 
 export function Home() {
   const bottomSheetRef = useRef<BottomSheetComponent>(null);
@@ -93,20 +94,21 @@ export function Home() {
     useCallback(() => {
       fetchMyProducts();
       fetchProducts();
-    }, [])
+    }, [filters])
   );
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View flex={1} px={6} bg="gray.200">
         <HeaderProfile />
-        
-          <BottomSheet
-            refBottomSheet={bottomSheetRef}
-            title="Filtrar anúncios"
-          >
 
-          </BottomSheet>
+        <BottomSheet refBottomSheet={bottomSheetRef} title="Filtrar anúncios">
+          <FormFilters
+            onChange={(values) => {
+              setFilters({ ...filters, ...values });
+            }}
+          />
+        </BottomSheet>
         <FlatList
           data={products}
           keyExtractor={(product) => product.id}
@@ -124,7 +126,7 @@ export function Home() {
                 <SearchInput
                   onChangeText={(text) => setFilters({ ...filters, query: text })}
                   value={filters.query}
-                  onClickFilters={() => null}
+                  onClickFilters={() => bottomSheetRef.current?.expand()}
                   onClickSearch={fetchProducts}
                   onSubmitEditing={fetchProducts}
                   returnKeyType="search"
