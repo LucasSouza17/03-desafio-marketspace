@@ -1,6 +1,6 @@
 # **Marketspace**
 
-![Marketspace]([https://example.com/marketspace-image.jpg](https://github.com/LucasSouza17/03-desafio-marketspace/assets/62787018/9a2c7b31-d54a-45ea-a62f-f8f58cf1b0d2))
+![Marketspace](https://github.com/LucasSouza17/03-desafio-marketspace/assets/62787018/9a2c7b31-d54a-45ea-a62f-f8f58cf1b0d2)
 
 ## Descrição do Projeto
 
