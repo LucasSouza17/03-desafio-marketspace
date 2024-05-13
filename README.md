@@ -1,5 +1,11 @@
 # **Marketspace**
 
+- ![React Native](https://img.shields.io/badge/-React_Native-blue)
+- ![React Hook Form](https://img.shields.io/badge/-React_Hook_Form-orange)
+- ![Zod](https://img.shields.io/badge/-Zod-yellow)
+- ![React Bottom Sheet](https://img.shields.io/badge/-React_Bottom_Sheet-green)
+- ![React Native Reanimated Carousel](https://img.shields.io/badge/-React_Native_Reanimated_Carousel-lightgrey)
+
 ![Marketspace](https://github.com/LucasSouza17/03-desafio-marketspace/assets/62787018/9a2c7b31-d54a-45ea-a62f-f8f58cf1b0d2)
 
 ## Descrição do Projeto
